@@ -1,4 +1,4 @@
-package com.API.LeituraConectada.model;
+package com.API.LeituraConectada.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
