@@ -15,11 +15,11 @@ import java.util.List;
 public class LivroController {
 
     @Autowired
-    LivroService service;
+    private LivroService service;
 
     @GetMapping
     public List<ResponseLivroDTO> listar() {
-        return service.obterLivros();
+        return service.listarLivros();
     }
 
     @PostMapping
@@ -29,16 +29,21 @@ public class LivroController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseLivroDTO> buscarPorId(@PathVariable(name = "id") int id) {
-        var livroEncontrado = service.obterLivroPorId(id);
+    public ResponseEntity<ResponseLivroDTO> buscarPorId(@PathVariable Integer id) { // ✨ Alterado para Long
+        var livroEncontrado = service.buscarPorId(id);
         return ResponseEntity.ok(livroEncontrado);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluir(@PathVariable int id) {
-        service.remover(id);
-        return ResponseEntity.noContent().build();
+    // ✨ Adicionado PutMapping (Atualizar) igual você tem nos Usuários
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseLivroDTO> atualizar(@PathVariable int id, @RequestBody RequestLivroDTO dadosAtualizados) {
+        var livroAtualizado = service.atualizar(id, dadosAtualizados);
+        return ResponseEntity.ok(livroAtualizado);
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable int id) { // ✨ Alterado para Long e Void
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 }

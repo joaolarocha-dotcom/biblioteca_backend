@@ -1,7 +1,7 @@
 package com.API.LeituraConectada.controllers;
 
-import com.API.LeituraConectada.dto.RequestUsuarioDTO;
-import com.API.LeituraConectada.dto.ResponseUsuarioDTO;
+import com.API.LeituraConectada.dtos.RequestUsuarioDTO;
+import com.API.LeituraConectada.dtos.ResponseUsuarioDTO;
 import com.API.LeituraConectada.services.UsuarioService;
 import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
