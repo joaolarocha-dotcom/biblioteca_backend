@@ -1,4 +1,4 @@
-package com.API.LeituraConectada.dto;
+package com.API.LeituraConectada.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

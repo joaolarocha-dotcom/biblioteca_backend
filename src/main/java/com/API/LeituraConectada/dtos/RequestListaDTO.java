@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseUsuarioDTO {
-    private Integer id;
-    private String nome;
-    private String documento;
-    private String email;
+public class RequestListaDTO {
+    private String titulo;
+    private Integer donoId; // ID do usuário que está criando a lista
 }
