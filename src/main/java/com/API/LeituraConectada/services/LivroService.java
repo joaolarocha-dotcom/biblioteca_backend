@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
-
+// O IMPORT PROBLEMÁTICO FOI REMOVIDO DAQUI
 
 @Service
 public class LivroService {
@@ -44,7 +43,6 @@ public class LivroService {
                 .map(Categoria::buscarPorId)
                 .collect(Collectors.toSet());
 
-        // Corrigido: adicionados os parâmetros '0.0' (nota média) e 'new ArrayList<>()' (avaliações)
         Livro livro = new Livro(
                 null,
                 request.getTitulo(),
@@ -59,8 +57,6 @@ public class LivroService {
         Livro livroSalvo = repository.save(livro);
         return convertePraLivroDTO(livroSalvo);
     }
-
-    // listar livros
 
     // listar livros
     public List<ResponseLivroDTO> listarLivros(){
@@ -104,7 +100,7 @@ public class LivroService {
         return false;
     }
 
-    // Adicione este método dentro do seu LivroService
+    // Buscar os 10 mais populares
     public List<ResponseLivroDTO> buscarOsDezMaisPopulares() {
         List<Livro> livrosTop10 = repository.findTop10ByOrderByPopularidadeDesc();
 
