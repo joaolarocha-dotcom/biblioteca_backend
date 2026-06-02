@@ -35,7 +35,7 @@ public class ListaLeituraService {
             List<CategoriaDTO> categoriasDto = livro.getCategorias().stream()
                     .map(cat -> new CategoriaDTO(cat.getId(), cat.getNome()))
                     .collect(Collectors.toList());
-            return new ResponseLivroDTO(livro.getId(), livro.getTitulo(), livro.getAutor(), livro.getQuantidadeDisponivel(), categoriasDto);
+            return new ResponseLivroDTO(livro.getId(), livro.getTitulo(), livro.getAutor(), livro.getQuantidadeDisponivel(), categoriasDto, livro.getNotaMedia());
         }).collect(Collectors.toList());
 
         String nomeDono = (lista.getDono() != null) ? lista.getDono().getNome() : "Desconhecido";

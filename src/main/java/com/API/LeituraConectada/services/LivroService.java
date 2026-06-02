@@ -8,10 +8,12 @@ import com.API.LeituraConectada.models.Categoria;
 import com.API.LeituraConectada.models.Livro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.API.LeituraConectada.services.LivroMapper;
+
 
 @Service
 public class LivroService {
@@ -30,21 +32,35 @@ public class LivroService {
                 livro.getTitulo(),
                 livro.getAutor(),
                 livro.getQuantidadeDisponivel(),
-                categoriasDto
+                categoriasDto,
+                livro.getNotaMedia()
         );
     }
 
     // cria novo livro com categorias
     public ResponseLivroDTO salvar(RequestLivroDTO request){
-        // Mapeia a lista de IDs [2, 7] recebida para os enums [FANTASIA, AVENTURA]
+        // Transforma os IDs recebidos [1, 2] nos Enums do banco
         Set<Categoria> categoriasEnums = request.getCategoriasIds().stream()
                 .map(Categoria::buscarPorId)
                 .collect(Collectors.toSet());
 
-        Livro livro = new Livro(null, request.getTitulo(), request.getAutor(), request.getQuantidadeDisponivel(), categoriasEnums);
+        // Corrigido: adicionados os parâmetros '0.0' (nota média) e 'new ArrayList<>()' (avaliações)
+        Livro livro = new Livro(
+                null,
+                request.getTitulo(),
+                request.getAutor(),
+                request.getQuantidadeDisponivel(),
+                categoriasEnums,
+                0.0,
+                new java.util.ArrayList<>(),
+                0
+        );
+
         Livro livroSalvo = repository.save(livro);
         return convertePraLivroDTO(livroSalvo);
     }
+
+    // listar livros
 
     // listar livros
     public List<ResponseLivroDTO> listarLivros(){
@@ -86,5 +102,14 @@ public class LivroService {
             return true;
         }
         return false;
+    }
+
+    // Adicione este método dentro do seu LivroService
+    public List<ResponseLivroDTO> buscarOsDezMaisPopulares() {
+        List<Livro> livrosTop10 = repository.findTop10ByOrderByPopularidadeDesc();
+
+        return livrosTop10.stream()
+                .map(this::convertePraLivroDTO)
+                .collect(Collectors.toList());
     }
 }
