@@ -42,9 +42,9 @@ public class AluguelService {
         );
     }
 
-    // Adicione a injeção do LivroMapper no topo do seu AluguelService
+
     @Autowired
-    private com.API.LeituraConectada.services.LivroMapper livroMapper;
+    private LivroService livroService;
 
     @Transactional
     public ResponseAluguelDTO alugarLivro(int usuarioId, int livroId) {
@@ -67,18 +67,17 @@ public class AluguelService {
         return convertePraAluguelDTO(aluguelRepository.save(aluguel));
     }
 
-    // ✨ NOVA FUNÇÃO: Busca os livros alugados recentemente pelo usuário
+
     public List<ResponseLivroDTO> buscarUltimosAlugados(int usuarioId) {
-        // 1. Busca todos os aluguéis do usuário ordenados pela data de aluguel mais recente
         List<Aluguel> alugueis = aluguelRepository.findByUsuarioIdOrderByDataAluguelDesc(usuarioId);
 
-        // 2. Extrai os livros desses aluguéis, remove duplicados (caso ele tenha alugado o mesmo livro mais de uma vez) e converte para DTO
         return alugueis.stream()
                 .map(Aluguel::getLivro)
-                .distinct() // Evita repetir o mesmo livro na lista visualizada
-                .map(livroMapper::mapResponseFromLivro) // Usa o mapper para converter em ResponseLivroDTO
+                .distinct()
+                .map(livro -> livroService.buscarPorId(livro.getId())) // Usa o serviço existente!
                 .collect(Collectors.toList());
     }
+
 
     @Transactional
     public ResponseAluguelDTO registrarDevolucao(int aluguelId) {
