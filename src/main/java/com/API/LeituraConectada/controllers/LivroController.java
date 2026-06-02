@@ -46,4 +46,27 @@ public class LivroController {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Adicione esta injeção no topo do seu LivroController junto com as outras
+    @Autowired
+    private com.API.LeituraConectada.services.AvaliacaoService avaliacaoService;
+
+    // Novo endpoint para obter os comentários de um livro específico
+    @GetMapping("/{id}/comentarios")
+    public ResponseEntity<List<com.API.LeituraConectada.dtos.ResponseAvaliacaoDTO>> obterComentarios(@PathVariable int id) {
+        var comentarios = avaliacaoService.obterComentariosPorLivro(id);
+
+        if (comentarios == null) {
+            return ResponseEntity.notFound().build(); // Retorna 404 se o livro não existir
+        }
+
+        return ResponseEntity.ok(comentarios); // Retorna 200 com a lista de avaliações
+    }
+
+    // Endpoint para listar o ranking dos 10 livros mais populares do sistema
+    @GetMapping("/populares")
+    public ResponseEntity<List<ResponseLivroDTO>> obterOsDezMaisPopulares() {
+        List<ResponseLivroDTO> top10 = service.buscarOsDezMaisPopulares();
+        return ResponseEntity.ok(top10);
+    }
 }

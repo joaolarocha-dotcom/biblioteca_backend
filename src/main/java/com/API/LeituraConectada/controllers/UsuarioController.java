@@ -57,4 +57,17 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    // Adicione esta injeção no topo do seu UsuarioController
+    @Autowired
+    private com.API.LeituraConectada.services.AluguelService aluguelService;
+
+    // Endpoint para buscar o histórico de livros alugados do usuário
+    @GetMapping("/{id}/ultimos-livros")
+    public ResponseEntity<List<com.API.LeituraConectada.dtos.ResponseLivroDTO>> obterUltimosLivrosAlugados(@PathVariable int id) {
+        var livros = aluguelService.buscarUltimosAlugados(id);
+
+        // Retorna a lista (pode retornar uma lista vazia de 200 OK se ele nunca tiver alugado nada)
+        return ResponseEntity.ok(livros);
+    }
+
 }
