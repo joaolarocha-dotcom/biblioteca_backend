@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseUsuarioDTO {
+public class ResponseAvaliacaoDTO {
     private Integer id;
-    private String nome;
-    private String documento;
-    private String email;
+    private int nota;
+    private String comentario;
+    private String tituloLivro;
 }

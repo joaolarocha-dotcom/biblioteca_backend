@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseUsuarioDTO {
-    private Integer id;
-    private String nome;
-    private String documento;
-    private String email;
+public class RequestAvaliacaoDTO {
+    private int nota; // Deve ser validado de 0 a 5
+    private String comentario;
 }

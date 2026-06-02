@@ -1,9 +1,6 @@
 package com.API.LeituraConectada.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,13 +11,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Usuario {
+public class Avaliacao {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String nome;
-    private String documento;
-    private String email;
 
+    private int nota; // Valor de 0 a 5
+    private String comentario;
 
+    @ManyToOne
+    @JoinColumn(name = "livro_id")
+    private Livro livro;
 }

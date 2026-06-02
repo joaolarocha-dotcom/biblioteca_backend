@@ -1,0 +1,52 @@
+package com.API.LeituraConectada.mappers;
+
+import com.API.LeituraConectada.dtos.CategoriaDTO;
+import com.API.LeituraConectada.dtos.RequestLivroDTO;
+import com.API.LeituraConectada.dtos.ResponseLivroDTO;
+import com.API.LeituraConectada.models.Categoria;
+import com.API.LeituraConectada.models.Livro;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Component
+public class LivroMapper {
+
+    public ResponseLivroDTO mapResponseFromLivro(Livro livro) {
+        // Converte o Set de Enums em Lista de DTOs antes de construir a resposta
+        List<CategoriaDTO> categoriasDto = livro.getCategorias().stream()
+                .map(cat -> new CategoriaDTO(cat.getId(), cat.getNome()))
+                .collect(Collectors.toList());
+
+        return new ResponseLivroDTO(
+                livro.getId(),
+                livro.getTitulo(),
+                livro.getAutor(),
+                livro.getQuantidadeDisponivel(),
+                categoriasDto,
+                livro.getNotaMedia() // Corrigido: adicionada a nota média que faltava
+        );
+    }
+
+    public Livro toEntLivro(RequestLivroDTO dto) {
+        // Converte os IDs inteiros vindos da requisição em Enums do Java
+        Set<Categoria> categoriasEnums = dto.getCategoriasIds().stream()
+                .map(Categoria::buscarPorId)
+                .collect(Collectors.toSet());
+
+        // Corrigido para bater com os novos atributos da classe Livro (notaMedia e avaliacoes)
+        return new Livro(
+                null, // ID nulo para gerar automaticamente no banco
+                dto.getTitulo(),
+                dto.getAutor(),
+                dto.getQuantidadeDisponivel(),
+                categoriasEnums,
+                0.0,  // Nota média inicial é 0.0 para livros novos
+                new ArrayList<>(),// Lista de avaliações vazia para livros novos
+                0
+        );
+    }
+}
