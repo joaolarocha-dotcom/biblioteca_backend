@@ -15,5 +15,5 @@ public class ResponseLivroDTO {
     private String titulo;
     private String autor;
     private int quantidadeDisponivel;
-    private List<CategoriaDTO> categorias; //  Devolve id e nome completo das categorias
-}
+    private List<CategoriaDTO> categorias;
+    private double notaMedia; }
