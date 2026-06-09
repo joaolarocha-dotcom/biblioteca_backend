@@ -3,6 +3,7 @@ package com.API.LeituraConectada.controllers;
 import com.API.LeituraConectada.dtos.RequestListaDTO;
 import com.API.LeituraConectada.dtos.ResponseListaDTO;
 import com.API.LeituraConectada.services.ListaLeituraService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("listas")
+@Tag(name = "Listas", description = "Endpoints para gerenciamento das listas de livros")
 public class ListaLeituraController {
 
     @Autowired

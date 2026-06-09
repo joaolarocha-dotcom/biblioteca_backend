@@ -3,17 +3,20 @@ package com.API.LeituraConectada.controllers;
 import com.API.LeituraConectada.dtos.RequestUsuarioDTO;
 import com.API.LeituraConectada.dtos.ResponseUsuarioDTO;
 import com.API.LeituraConectada.services.UsuarioService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("usuarios")
+@Tag(name = "Usuários", description = "Endpoints para gerenciamento de usuários")
 public class UsuarioController {
 
     @Autowired
@@ -25,7 +28,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseUsuarioDTO> gravar(@RequestBody RequestUsuarioDTO request){
+    public ResponseEntity<ResponseUsuarioDTO> gravar(@Valid @RequestBody RequestUsuarioDTO request){
         var dto = service.salvar(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
@@ -40,7 +43,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseUsuarioDTO> atualizar(@PathVariable int id,@RequestBody RequestUsuarioDTO request){
+    public ResponseEntity<ResponseUsuarioDTO> atualizar(@PathVariable int id,@Valid @RequestBody RequestUsuarioDTO request){
         var dto = service.atualizar(id, request);
         if (dto == null){
             return ResponseEntity.notFound().build();

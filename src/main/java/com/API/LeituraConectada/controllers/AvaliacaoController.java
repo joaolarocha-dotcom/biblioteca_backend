@@ -3,6 +3,7 @@ package com.API.LeituraConectada.controllers;
 import com.API.LeituraConectada.dtos.RequestAvaliacaoDTO;
 import com.API.LeituraConectada.dtos.ResponseAvaliacaoDTO;
 import com.API.LeituraConectada.services.AvaliacaoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("avaliacoes")
+@Tag(name = "Avaliações", description = "Endpoints para gerenciamento das avaliações de livros")
 public class AvaliacaoController {
 
     @Autowired

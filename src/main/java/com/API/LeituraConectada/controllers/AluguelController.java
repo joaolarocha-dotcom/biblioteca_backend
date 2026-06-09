@@ -2,6 +2,7 @@ package com.API.LeituraConectada.controllers;
 
 import com.API.LeituraConectada.dtos.ResponseAluguelDTO;
 import com.API.LeituraConectada.services.AluguelService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("alugueis")
+@Tag(name = "Aluguéis", description = "Endpoints para gerenciamento dos alugueis e devoluções de livros")
 public class AluguelController {
 
     @Autowired

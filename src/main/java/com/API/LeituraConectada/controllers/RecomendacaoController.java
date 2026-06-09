@@ -3,6 +3,7 @@ package com.API.LeituraConectada.controllers;
 import com.API.LeituraConectada.dtos.RequestRecomendacaoDTO;
 import com.API.LeituraConectada.dtos.ResponseRecomendacaoDTO;
 import com.API.LeituraConectada.services.RecomendacaoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("recomendacoes")
+@Tag(name = "Recomendações", description = "Endpoints para gerenciamento de recomendações de livros")
 public class RecomendacaoController {
 
     @Autowired
