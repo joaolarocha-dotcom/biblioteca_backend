@@ -11,6 +11,7 @@ import com.API.LeituraConectada.dtos.ResponseUsuarioDTO;
 import com.API.LeituraConectada.models.Usuario;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,12 +23,36 @@ public class UsuarioService {
         return new ResponseUsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getDocumento(),usuario.getEmail());
     }
 
+    private String formatarDocumento(String documentoPuro) {
+        if (documentoPuro == null) return null;
+        // Remove qualquer caractere que não seja número por segurança antes de aplicar a máscara
+        String apenasNumeros = documentoPuro.replaceAll("\\D", "");
+        if (apenasNumeros.length() == 11) {
+            return apenasNumeros.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+        }
+        return documentoPuro; // Caso não tenha 11 dígitos, retorna o que foi digitado
+    }
+
     //cria novo usuario
     public ResponseUsuarioDTO salvar(RequestUsuarioDTO request){
-        Usuario usuario = new Usuario(null, request.getNome(),request.getDocumento(), request.getEmail());
-        Usuario usarioSalvo = repository.save(usuario);
-        return convertePraUsuarioDTO(usarioSalvo);
+        // 1. Formata os 11 números recebidos para o padrão com pontos e traço
+        String documentoFormatado = formatarDocumento(request.getDocumento());
+
+        // 2. Busca no banco se já existe alguém com esse documento formatado
+        Optional<Usuario> usuarioExistente = repository.findByDocumento(documentoFormatado);
+
+        if (usuarioExistente.isPresent()) {
+            // Se já existe, não cria outro! Apenas retorna o que já está no banco convertido para DTO
+            return convertePraUsuarioDTO(usuarioExistente.get());
+        }
+
+        // 3. Se não existe, cria e salva o novo usuário normalmente
+        Usuario usuario = new Usuario(null, request.getNome(), documentoFormatado, request.getEmail());
+        Usuario usuarioSalvo = repository.save(usuario);
+        return convertePraUsuarioDTO(usuarioSalvo);
     }
+
+
 
     //listar usuarios
 
@@ -48,7 +73,7 @@ public class UsuarioService {
     //atualizar dados
     public ResponseUsuarioDTO atualizar(int id, RequestUsuarioDTO request){
         return repository.findById(id).map(usuarioExistente -> {
-            usuarioExistente.setDocumento(request.getDocumento());
+            usuarioExistente.setDocumento(formatarDocumento(request.getDocumento()));
             usuarioExistente.setNome(request.getNome());
             usuarioExistente.setEmail(request.getEmail());
 
